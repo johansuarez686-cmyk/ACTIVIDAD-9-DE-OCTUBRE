@@ -3,108 +3,84 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) {
+    static int contadorDigital = 1;
+    static int contadorImpreso = 1;
 
+    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        ArrayList<Libro> listaLibros = new ArrayList<>();
+        ArrayList<Libro> libros = new ArrayList<>();
         int opcion = 0;
 
-        while (opcion != 4) {
-            System.out.println("------BIBLIOTECA------");
-            System.out.println("1. Agregar Libro Digital");
-            System.out.println("2. Agregar Libro Impreso");
-            System.out.println("3. Buscar libro por título");
-            System.out.println("4. Salir");
-            System.out.print("Seleccione una opción: ");
+        while (opcion != 5) {
+            System.out.println("------ MENU------");
+            System.out.println("1. Agregar libro Digital");
+            System.out.println("2. Agregar libro Impreso");
+            System.out.println("3. Buscar libro por titulo");
+            System.out.println("4. Lista de libros");
+            System.out.println("5. Salir");
+            System.out.print("Opción: ");
             opcion = sc.nextInt();
             sc.nextLine();
 
             switch (opcion) {
-
                 case 1:
+                    String codigoD = "LD00" + contadorDigital++;
                     System.out.print("Título: ");
-                    String tituloD = sc.nextLine();
+                    String td = sc.nextLine();
                     System.out.print("Autor: ");
-                    String autorD = sc.nextLine();
+                    String ad = sc.nextLine();
                     System.out.print("Precio: ");
-                    double precioD = sc.nextDouble();
+                    double pd = sc.nextDouble();
                     System.out.print("Cantidad: ");
-                    int cantidadD = sc.nextInt();
-                    System.out.print("Peso del archivo (MB): ");
-                    double pesoArchivo = sc.nextDouble();
-                    boolean disponible = true;
-
-                    LibroDigital ld = new LibroDigital(tituloD, autorD, precioD, cantidadD, pesoArchivo, disponible);
-                    listaLibros.add(ld);
-                    System.out.println("Libro Digital agregado");
+                    int cd = sc.nextInt();
+                    System.out.print("Tamaño archivo (MB): ");
+                    double peso = sc.nextDouble();
+                    libros.add(new LibroDigital(codigoD, td, ad, pd, cd, peso));
+                    System.out.println("Libro Digital agregado con código " + codigoD);
                     break;
 
                 case 2:
+                    String codigoI = "LF00" + contadorImpreso++;
                     System.out.print("Título: ");
-                    String tituloI = sc.nextLine();
+                    String ti = sc.nextLine();
                     System.out.print("Autor: ");
-                    String autorI = sc.nextLine();
+                    String ai = sc.nextLine();
                     System.out.print("Precio: ");
-                    double precioI = sc.nextDouble();
+                    double pi = sc.nextDouble();
                     System.out.print("Cantidad: ");
-                    int cantidadI = sc.nextInt();
-                    System.out.print("Peso (gramos): ");
-                    double peso = sc.nextDouble();
-                    System.out.print("Número de ejemplares: ");
-                    int numEjem = sc.nextInt();
-
-                    LibroImpreso li = new LibroImpreso(tituloI, autorI, precioI, cantidadI, peso, numEjem);
-                    listaLibros.add(li);
-                    System.out.println("Libro Impreso agregado con éxito.");
+                    int ci = sc.nextInt();
+                    System.out.print("Peso fisico (g): ");
+                    double pf = sc.nextDouble();
+                    System.out.print("Numero de ejemplares: ");
+                    int ne = sc.nextInt();
+                    libros.add(new LibroImpreso(codigoI, ti, ai, pi, ci, pf, ne));
+                    System.out.println("Libro Impreso agregado con codigo " + codigoI);
                     break;
 
                 case 3:
-                    System.out.print("Ingrese el título del libro: ");
-                    String buscar = sc.nextLine();
-                    boolean encontrado = false;
-
-                    for (Libro lib : listaLibros) {
-                        if (lib.getTitulo().equalsIgnoreCase(buscar)) {
-                            encontrado = true;
-                            lib.mostrarLibro();
-
-                            if (lib instanceof LibroDigital) {
-                                LibroDigital ldig = (LibroDigital) lib;
-                                System.out.println("1. Prestar");
-                                System.out.println("2. Devolver");
-                                System.out.print("Seleccione: ");
-                                int opDig = sc.nextInt();
-                                if (opDig == 1) ldig.prestar();
-                                else if (opDig == 2) ldig.devolver();
-
-                            } else if (lib instanceof LibroImpreso) {
-                                LibroImpreso limp = (LibroImpreso) lib;
-                                System.out.println("1. Prestar");
-                                System.out.println("2. Devolver");
-                                System.out.print("Seleccione: ");
-                                int opImp = sc.nextInt();
-                                if (opImp == 1) {
-                                    System.out.print("Cuántos desea prestar?: ");
-                                    int cant = sc.nextInt();
-                                    limp.prestar(cant);
-                                } else if (opImp == 2) {
-                                    System.out.print("Cuántos desea devolver?: ");
-                                    int cant = sc.nextInt();
-                                    limp.devolver(cant);
-                                }
-                            }
+                    System.out.print("Ingrese el titulo del libro: ");
+                    String bus = sc.nextLine();
+                    boolean ok = false;
+                    for (Libro l : libros) {
+                        if (l.getTitulo().equalsIgnoreCase(bus)) {
+                            l.mostrarLibro();
+                            ok = true;
                         }
                     }
-                    if (encontrado) {
-                        System.out.println("No se encontró el libro");
-                    }
+                    if (!ok) System.out.println("No encontrado.");
                     break;
+
                 case 4:
-                    System.out.println("Gracias");
+                    System.out.println("------ LISTA DE LIBROS ------");
+                    for (Libro l : libros) l.mostrarLibro();
+                    break;
+
+                case 5:
+                    System.out.println("gracias");
                     break;
 
                 default:
-                    System.out.println("Opción inválida.");
+                    System.out.println("Opción invalida");
             }
         }
         sc.close();

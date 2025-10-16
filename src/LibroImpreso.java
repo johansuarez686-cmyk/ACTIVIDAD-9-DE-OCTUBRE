@@ -1,55 +1,38 @@
 public class LibroImpreso extends Libro {
 
-    private double peso; // en gramos
+    private double peso;
     private int numeroEjemplares;
 
-    public LibroImpreso(String titulo, String autor, double precio, int cantidad, double peso, int numeroEjemplares) {
-        super(titulo, autor, precio, cantidad);
+    public LibroImpreso(String codigo, String titulo, String autor, double precio, int cantidad, double peso, int numeroEjemplares) {
+        super(codigo, titulo, autor, precio, cantidad);
         this.peso = peso;
         this.numeroEjemplares = numeroEjemplares;
     }
 
-    public double getPeso() {
-        return peso;
-    }
-
-    public void setPeso(double peso) {
-        this.peso = peso;
-    }
-
-    public int getNumeroEjemplares() {
-        return numeroEjemplares;
-    }
-
-    public void setNumeroEjemplares(int numeroEjemplares) {
-        this.numeroEjemplares = numeroEjemplares;
-    }
-
-    public void prestar(int cantidad) {
-        if (cantidad > getNumeroEjemplares()) {
-            System.out.println("No se pueden prestar más libros de los que hay disponibles.");
-        } else if (cantidad <= 0) {
-            System.out.println("Cantidad invalida para el prestamo.");
+    public void prestar(int cant) {
+        if (cant <= 0) {
+            System.out.println("Cantidad invalida");
+        } else if (cant > numeroEjemplares) {
+            System.out.println("No hay suficientes ejemplares");
         } else {
-            numeroEjemplares -= cantidad;
-            System.out.println("Se prestaron " + cantidad + " libro(s) correctamente.");
+            numeroEjemplares -= cant;
+            System.out.println("Se prestaron " + cant + " ejemplares.");
         }
     }
 
-    public void devolver(int cantidad) {
-        if (cantidad > 2) {
-            System.out.println("No se pueden devolver mas de dos libros a la vez");
+    public void devolver(int cant) {
+        if (cant > 2) {
+            System.out.println("No se pueden devolver dos libros a la vez");
         } else {
-            numeroEjemplares += cantidad;
-            System.out.println("Libro(s) devuelto(s) correctamente.");
+            numeroEjemplares += cant;
+            System.out.println("Se devolvieron " + cant + " ejemplares.");
         }
     }
 
     @Override
     public void mostrarLibro() {
         super.mostrarLibro();
-        System.out.println("Peso fisico: " + peso + " gramos");
-        System.out.println("Ejemplares en stock: " + numeroEjemplares);
+        System.out.println("Peso: " + peso + " g");
+        System.out.println("Ejemplares: " + numeroEjemplares);
     }
 }
-
